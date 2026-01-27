@@ -1,0 +1,53 @@
+<div class="modal-overlay" x-show="$store.modal.isOpen('workout-modal')" x-cloak>
+  <div class="modal-content" @click.away="$store.modal.close()" x-data="{ addingNewExercise: false, newExName: '' }">
+
+    <header class="modal-form__header">
+      <h2 class="modal-form__title">Нове тренування</h2>
+      <button class="modal-form__close" @click="$store.modal.close()">✕</button>
+    </header>
+
+    <form class="modal-form" @submit.prevent="$store.workout.save($store.user.user_id)">
+
+      <div class="modal-form__group">
+        <label class="modal-form__label">Назва тренування</label>
+        <input type="text" x-model="$store.workout.formData.name" class="modal-form__input" placeholder="Наприклад: Ноги">
+      </div>
+
+      <div class="modal-form__new-ex-zone" x-show="addingNewExercise" x-transition>
+        <div class="modal-form__row">
+          <input type="text" x-model="newExName" class="modal-form__input" placeholder="Назва нової вправи (напр. Присідання)">
+          <button type="button" class="modal-form__btn--small" @click="if(newExName) { $store.workout.createNewExercise(newExName); newExName = ''; addingNewExercise = false; }">Додати</button>
+          <button type="button" @click="addingNewExercise = false">✕</button>
+        </div>
+      </div>
+
+      <div class="modal-form__sets">
+        <template x-for="(set, index) in $store.workout.formData.sets" :key="index">
+          <div class="modal-form__row">
+            <select x-model.number="set.exercise_id" class="modal-form__input modal-form__input--select" required>
+              <option value="" disabled selected>Вправа</option>
+              <template x-for="ex in $store.workout.exercises" :key="ex.exercise_id">
+                <option :value="ex.exercise_id" x-text="ex.name"></option>
+              </template>
+            </select>
+
+            <button type="button" class="modal-form__quick-add" @click="addingNewExercise = true" x-show="!addingNewExercise">+</button>
+
+            <input type="number" step="0.5" x-model.number="set.weight" placeholder="кг" class="modal-form__input modal-form__input--number">
+            <input type="number" x-model.number="set.reps" placeholder="0" class="modal-form__input modal-form__input--number" required>
+
+            <button type="button" x-show="$store.workout.formData.sets.length > 1" @click="$store.workout.removeSet(index)" class="modal-form__remove">✕</button>
+          </div>
+        </template>
+      </div>
+
+      <button type="button" class="modal-form__add-set" @click="$store.workout.addSet()">
+        + Додати підхід
+      </button>
+
+      <button type="submit" class="modal-form__btn--submit" :disabled="$store.workout.isLoading">
+        Зберегти тренування
+      </button>
+    </form>
+  </div>
+</div>

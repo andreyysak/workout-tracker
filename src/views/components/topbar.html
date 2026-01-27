@@ -23,7 +23,10 @@
     </div>
 
     <div class="topbar__add">
-      <button class="topbar__add-btn">
+      <button
+              class="topbar__add-btn"
+              @click="$store.workout.prepareForm()"
+      >
         <img src="/src/assets/icons/add-svgrepo-com.svg" alt="plus icon">
         <span>Додати</span>
       </button>

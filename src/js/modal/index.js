@@ -1,36 +1,23 @@
-import { Alpine } from "alpinejs";
+import Alpine from "alpinejs";
 
 Alpine.store('modal', {
     currentModal: null,
     justOpened: false,
 
     init() {
+        // Перевірка URL при завантаженні
         const urlParams = new URLSearchParams(window.location.search);
         const modal = urlParams.get('modal');
-        if (modal) {
-            this.open(modal);
-        }
+        if (modal) this.open(modal);
     },
 
     open(modalName) {
-        if (this.currentModal !== null) {
-            this.close();
-        }
         this.currentModal = modalName;
         this.justOpened = true;
-        document.querySelector('html').classList.add('app--fix');
+        document.documentElement.classList.add('app--fix');
 
-        setTimeout(() => {
-            this.justOpened = false;
-        }, 10);
-    },
-
-    toggle(modalName) {
-        if (this.isOpen(modalName)) {
-            this.close();
-        } else {
-            this.open(modalName);
-        }
+        // Захист від миттєвого закриття (outside click)
+        setTimeout(() => { this.justOpened = false; }, 100);
     },
 
     isOpen(modalName) {
@@ -38,19 +25,8 @@ Alpine.store('modal', {
     },
 
     close() {
-        window.dispatchEvent(new CustomEvent('close-modal'));
         this.currentModal = null;
-        document.querySelector('html').classList.remove('app--fix');
-    },
-
-    handleOutsideClick(modalName) {
-        if (this.justOpened) {
-            return;
-        }
-        if (this.isOpen(modalName)) {
-            this.close();
-        }
+        document.documentElement.classList.remove('app--fix');
+        window.dispatchEvent(new CustomEvent('close-modal'));
     }
 });
-
-window.modal = Alpine.store('modal');

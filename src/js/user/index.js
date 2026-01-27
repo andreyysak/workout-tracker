@@ -10,6 +10,7 @@ document.addEventListener('alpine:init', () => {
         phone: '',
         country: '',
         city: '',
+        user_id: '',
 
         get memberSince() {
             return formatDate(this.created_at);
@@ -35,6 +36,8 @@ document.addEventListener('alpine:init', () => {
                 this.phone = data.phone
                 this.country = data.country
                 this.city = data.city
+                this.user_id = data.user_id
+
             } catch (error) {
                 console.error("Не вдалося отримати дані:", error);
             }
