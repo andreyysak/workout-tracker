@@ -1,0 +1,57 @@
+<div class="menu"
+     x-show="$store.sidebar.isOpen"
+     x-transition:enter="menu--entering"
+     x-transition:enter-start="menu--hidden"
+     x-transition:enter-end="menu--visible"
+     x-transition:leave="menu--leaving"
+     x-transition:leave-start="menu--visible"
+     x-transition:leave-end="menu--hidden"
+     @click.away="$store.sidebar.isOpen = false"
+     x-cloak
+>
+    <nav class="menu-nav">
+        <ul class="menu-nav__list">
+            <li class="menu-nav__list-item">
+                <a @click="$store.router.push('home')" class="menu-nav__list-item-link">
+                    <span class="menu-nav__icon">🏠</span> Домівка
+                </a>
+            </li>
+            <li class="menu-nav__list-item">
+                <a @click="$store.router.push('plan')" class="menu-nav__list-item-link">
+                    <span class="menu-nav__icon">📅</span> План
+                </a>
+            </li>
+            <li class="menu-nav__list-item">
+                <button @click="$store.router.push('profile')" class="menu-nav__list-item-link">
+                    <span class="menu-nav__icon">📜</span> Історія
+                </button>
+            </li>
+            <li class="menu-nav__list-item">
+                <button @click="$store.router.push('profile')" class="menu-nav__list-item-link">
+                    <span class="menu-nav__icon">💪</span> Тренування
+                </button>
+            </li>
+            <li class="menu-nav__list-item">
+                <button @click="$store.router.push('profile')" class="menu-nav__list-item-link">
+                    <span class="menu-nav__icon">📈</span> Динаміка
+                </button>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="menu__footer">
+        <button class="menu__theme-btn" @click="$store.sidebar.toggleTheme()">
+            <div class="menu__theme-icons">
+                <img x-show="!$store.sidebar.isDark"
+                     src="/src/assets/icons/moon-svgrepo-com.svg"
+                     class="menu__theme-icon">
+
+                <img x-show="$store.sidebar.isDark"
+                     src="/src/assets/icons/sun-svgrepo-com.svg"
+                     class="menu__theme-icon"
+                     x-cloak>
+            </div>
+            <span>Змінити тему</span>
+        </button>
+    </div>
+</div>

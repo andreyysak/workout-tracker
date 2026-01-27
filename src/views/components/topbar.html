@@ -1,0 +1,35 @@
+<div class="topbar">
+  <div class="topbar__search">
+    <div class="topbar__search-wrapper">
+      <img src="/src/assets/icons/search-svgrepo-com.svg" class="topbar__search-icon" alt="search">
+      <input type="text" class="topbar__search-input" placeholder="Знайти вправу...">
+    </div>
+  </div>
+
+  <div class="topbar__actions">
+    <div class="topbar__filters" x-data="{ open: false }">
+      <button class="topbar__filter-btn" @click="open = !open" @click.away="open = false">
+        <span>Вправи</span>
+        <img src="/src/assets/icons/arrow-down-svgrepo-com.svg" :class="open ? 'rotate-180' : ''" alt="chevron">
+      </button>
+
+      <div class="topbar__dropdown" x-show="open" x-transition x-cloak>
+        <ul class="topbar__dropdown-list">
+          <li><button class="topbar__dropdown-item">💪 Силові</button></li>
+          <li><button class="topbar__dropdown-item">🏃 Кардіо</button></li>
+          <li><button class="topbar__dropdown-item">🧘 Розтяжка</button></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="topbar__add">
+      <button
+              class="topbar__add-btn"
+              @click="$store.workout.prepareForm()"
+      >
+        <img src="/src/assets/icons/add-svgrepo-com.svg" alt="plus icon">
+        <span>Додати</span>
+      </button>
+    </div>
+  </div>
+</div>

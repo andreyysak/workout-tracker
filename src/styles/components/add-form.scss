@@ -1,0 +1,156 @@
+@use "../common/variables" as v;
+@use "../common/mixins" as mix;
+@use "../common/typography" as typo;
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  @include mix.flex-center;
+  padding: 16px;
+}
+
+.modal-content {
+  background: #fff; // Білий фон як на скріншоті
+  width: 100%;
+  max-width: 450px;
+  border-radius: 20px; // Скруглення як на скрині
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+
+  body.dark-mode & {
+    background: v.$surface-dark;
+  }
+}
+
+.modal-form {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  &__title {
+    font-size: 24px;
+    font-weight: 800;
+  }
+
+  &__close {
+    cursor: pointer;
+    font-size: 20px;
+    background: none;
+    border: none;
+    padding: 0;
+    line-height: 1;
+  }
+
+  &__group {
+    display: flex;
+    align-items: center; // Вирівнюємо назву і інпут в один рядок
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+
+  &__label {
+    font-size: 14px;
+    white-space: nowrap;
+    color: #333;
+    body.dark-mode & { color: #fff; }
+  }
+
+  &__row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    align-items: center;
+  }
+
+  &__quick-add {
+    background: #f0f0f0;
+    border: none;
+    border-radius: 8px;
+    width: 35px;
+    height: 45px;
+    cursor: pointer;
+    font-weight: bold;
+    &:hover { background: #e0e0e0; }
+  }
+
+  &__new-ex-zone {
+    background: rgba(v.$accent-light, 0.05);
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(v.$accent-light, 0.2);
+  }
+
+  &__btn--small {
+    background: v.$accent-light;
+    color: white;
+    padding: 0 15px;
+    height: 45px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+  }
+
+  &__input {
+    height: 45px; // Однакова висота для всього
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 0 15px;
+    font-size: 14px;
+    width: 100%;
+    outline: none;
+    box-sizing: border-box;
+
+    &:focus { border-color: v.$accent-light; }
+
+    &--select {
+      flex: 2;
+    }
+    &--number {
+      flex: 0.5;
+      text-align: center;
+    }
+
+    body.dark-mode & {
+      background: v.$bg-dark;
+      border-color: v.$border-dark;
+      color: #fff;
+    }
+  }
+
+  &__add-set {
+    display: block;
+    width: 100%;
+    background: none;
+    border: none;
+    color: #000;
+    font-weight: 700;
+    padding: 10px 0;
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  &__btn--submit {
+    width: 100%; // Кнопка на всю ширину
+    height: 50px;
+    background: #7ed321; // Зелений як на скріншоті
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: filter 0.2s;
+
+    &:hover { filter: brightness(1.05); }
+    &:disabled { opacity: 0.6; }
+  }
+}

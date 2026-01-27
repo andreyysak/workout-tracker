@@ -1,0 +1,55 @@
+<div class="profile" x-data x-init="$store.user.getInfo()">
+    <header class="profile__header">
+        <div class="profile__avatar-wrapper">
+            <img :src="$store.user.avatar" alt="User Avatar" class="profile__avatar">
+        </div>
+        <h1 class="profile__name" x-text="$store.user.telegram_username || 'Спортсмен'"></h1>
+        <p class="profile__status">У системі з <span x-text="$store.user.memberSince"></span></p>
+    </header>
+
+    <div class="profile__content">
+        <section class="profile__section">
+            <h2 class="profile__section-title">Telegram Зв'язок</h2>
+            <div class="profile__card">
+                <div class="profile__info-row">
+                    <span class="profile__label">Username</span>
+                    <span class="profile__value" x-text="'@' + $store.user.telegram_username"></span>
+                </div>
+                <div class="profile__info-row">
+                    <span class="profile__label">Telegram ID</span>
+                    <span class="profile__value profile__value--muted" x-text="$store.user.telegram_id"></span>
+                </div>
+            </div>
+        </section>
+
+        <section class="profile__section">
+            <h2 class="profile__section-title">Особисті дані</h2>
+            <div class="profile__card">
+                <div class="profile__info-row">
+                    <span class="profile__label">Email</span>
+                    <span class="profile__value" x-text="$store.user.email || 'Не вказано'"></span>
+                </div>
+                <div class="profile__info-row">
+                    <span class="profile__label">Телефон</span>
+                    <span class="profile__value" x-text="$store.user.phone || 'Не вказано'"></span>
+                </div>
+            </div>
+        </section>
+
+        <section class="profile__section">
+            <h2 class="profile__section-title">Місцезнаходження</h2>
+            <div class="profile__card">
+                <div class="profile__info-row">
+                    <span class="profile__label">Країна</span>
+                    <span class="profile__value" x-text="$store.user.country || '—'"></span>
+                </div>
+                <div class="profile__info-row">
+                    <span class="profile__label">Місто</span>
+                    <span class="profile__value" x-text="$store.user.city || '—'"></span>
+                </div>
+            </div>
+        </section>
+
+        <button class="profile__logout-btn" @click="console.log('Logout logic here')">Вийти з акаунта</button>
+    </div>
+</div>

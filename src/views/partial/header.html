@@ -1,0 +1,18 @@
+<header class="header">
+    <button class="header__button" @click="$store.sidebar.toggle()">
+        <img x-show="!$store.sidebar.isOpen"
+             src="/src/assets/icons/menu-svgrepo-com.svg"
+             alt="Open Menu"
+             class="header__icon">
+
+        <img x-show="$store.sidebar.isOpen"
+             src="/src/assets/icons/menu-alt-svgrepo-com.svg"
+             alt="Close Menu"
+             class="header__icon"
+             x-cloak>
+    </button>
+
+    <button @click="$store.router.push('profile')" class="header__link">
+        <img src="/src/assets/icons/user-alt-1-svgrepo-com.svg" alt="User Icon" class="header__icon">
+    </button>
+</header>

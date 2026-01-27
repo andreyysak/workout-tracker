@@ -1,0 +1,83 @@
+@use "./common/reset" as *;
+@use "./common/variables" as *;
+@use "./common/mixins" as *;
+@use "./common/typography" as *;
+@use "app";
+
+[x-cloak] {
+  display: none !important;
+}
+
+body {
+  font-family: "Roboto Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: $font-weight-regular;
+  font-style: normal;
+  @include body-text;
+
+  @include container;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  transition: background-color $transition-base, color $transition-base;
+
+  background-color: $bg-light;
+  color: $text-main-light;
+
+  &.dark-mode {
+    background-color: $bg-dark;
+    color: $text-main-dark;
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $border-light;
+    border-radius: 10px;
+    border: 2px solid $bg-light;
+    background-clip: content-box;
+
+    &:hover {
+      background-color: $text-muted-light;
+    }
+  }
+
+  &.dark-mode {
+    &::-webkit-scrollbar-thumb {
+      background-color: $border-dark;
+      border-color: $bg-dark;
+
+      &:hover {
+        background-color: $text-muted-dark;
+      }
+    }
+  }
+
+  scrollbar-width: thin;
+  scrollbar-color: $border-light transparent;
+
+  &.dark-mode {
+    scrollbar-color: $border-dark transparent;
+  }
+
+  main {
+    @include container;
+    flex: 1;
+  }
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  scrollbar-width: inherit;
+  scrollbar-color: inherit;
+}

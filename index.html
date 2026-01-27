@@ -2,12 +2,34 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>workout-tracker</title>
+    <link rel="shortcut icon" href="dumbell.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/styles/main.scss">
+    <script type="module" src="/src/js/main.js"></script>
+    <title>Workout Tracker</title>
   </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
+  <body x-data x-cloak>
+  <template x-if="!$store.auth.isAuthenticated">
+    <load src="src/views/pages/login.html" />
+  </template>
+
+  <template x-if="$store.auth.isAuthenticated">
+    <div class="app-layout">
+      <load src="src/views/partial/header.html" />
+      <load src="src/views/partial/menu.html" />
+
+        <div x-show="$store.router.currentPage === 'home'" x-transition>
+          <load src="src/views/pages/home.html" />
+        </div>
+        <div x-show="$store.router.currentPage === 'profile'" x-transition x-cloak>
+          <load src="src/views/pages/profile.html" />
+        </div>
+    </div>
+  </template>
+
+  <load src="src/views/modals/add-form.html" />
   </body>
 </html>

@@ -1,0 +1,19 @@
+@use "../../styles/common/variables" as var;
+@use "../../styles/common/mixins" as mix;
+
+.home {
+  @include mix.padding-container;
+
+  &__content {
+    height: calc(100vh - 60vh);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+
+    & > * {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+}
