@@ -12,8 +12,20 @@
     <title>Workout Tracker</title>
   </head>
   <body x-data>
-    <load src="src/views/partial/header.html" />
-    <load src="src/views/partial/menu.html" />
-    <load src="src/views/pages/home.html" />
+  <load src="src/views/partial/header.html" />
+  <load src="src/views/partial/menu.html" />
+
+    <div x-show="$store.router.currentPage === 'home'"
+         x-transition:enter="fade-enter"
+         x-transition:enter-end="fade-enter-active">
+      <load src="src/views/pages/home.html" />
+    </div>
+
+    <div x-show="$store.router.currentPage === 'profile'"
+         x-transition:enter="fade-enter"
+         x-transition:enter-end="fade-enter-active"
+         x-cloak>
+      <load src="src/views/pages/profile.html" />
+    </div>
   </body>
 </html>
