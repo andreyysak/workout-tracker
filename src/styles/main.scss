@@ -2,6 +2,7 @@
 @use "./common/variables" as *;
 @use "./common/mixins" as *;
 @use "./common/typography" as *;
+@use "app";
 
 body {
   font-family: "Roboto Mono", monospace;

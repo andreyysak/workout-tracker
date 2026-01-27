@@ -1,0 +1,50 @@
+@use "../common/variables" as v;
+@use "../common/mixins" as mix;
+
+.header {
+  height: 60px;
+  width: 100%;
+  @include mix.flex-between;
+
+  &__button {
+    @include mix.flex-center;
+    width: 44px;
+    height: 44px;
+    border-radius: v.$border-radius-md;
+    transition: background-color v.$transition-base;
+
+    &:hover {
+      background-color: rgba(v.$accent-light, 0.1);
+    }
+
+    body.dark-mode &:hover {
+      background-color: rgba(v.$accent-dark, 0.1);
+    }
+  }
+
+  &__link {
+    @include mix.flex-center;
+    width: 44px;
+    height: 44px;
+    border-radius: v.$border-radius-md;
+    transition: background-color v.$transition-base;
+
+    &:hover {
+      background-color: rgba(v.$accent-light, 0.1);
+    }
+
+    body.dark-mode &:hover {
+      background-color: rgba(v.$accent-dark, 0.1);
+    }
+  }
+
+  &__icon {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+
+    body.dark-mode & {
+      filter: invert(1) brightness(2);
+    }
+  }
+}
