@@ -1,0 +1,12 @@
+<div class="login-page">
+  <div class="login-card">
+    <img src="/dumbell.ico" alt="Logo" class="login-card__logo">
+    <h1 class="login-card__title">Workout Tracker</h1>
+    <p class="login-card__subtitle">Твій персональний фітнес-щоденник</p>
+
+    <button class="login-card__google-btn" @click="$store.auth.loginWithGoogle()">
+      <img src="/src/assets/icons/google-178-svgrepo-com.svg" alt="Google">
+      <span>Увійти через Google</span>
+    </button>
+  </div>
+</div>

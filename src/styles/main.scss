@@ -4,6 +4,10 @@
 @use "./common/typography" as *;
 @use "app";
 
+[x-cloak] {
+  display: none !important;
+}
+
 body {
   font-family: "Roboto Mono", monospace;
   font-optical-sizing: auto;
