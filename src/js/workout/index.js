@@ -1,4 +1,5 @@
 import Alpine from 'alpinejs';
+import {successAddWorkout} from "../sweet-alert/index.js";
 
 Alpine.store('workout', {
     workouts: [],
@@ -22,7 +23,6 @@ Alpine.store('workout', {
 
     async loadWorkouts(userId) {
         try {
-            // Маршрут згідно з таблицею: /api/workout/user/:userId
             const res = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/workout/user/${userId}`, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
             });
@@ -32,7 +32,6 @@ Alpine.store('workout', {
 
     async loadExercises(userId) {
         try {
-            // Маршрут згідно з таблицею: /api/exercise/user/:userId
             const res = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/exercise/user/${userId}`, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
             });
@@ -41,7 +40,6 @@ Alpine.store('workout', {
     },
 
     async createNewExercise(name) {
-        // Беремо ID прямо зі стору користувача, щоб не передавати його щоразу
         const userId = Alpine.store('user').user_id;
         const token = localStorage.getItem('token');
 
@@ -132,6 +130,7 @@ Alpine.store('workout', {
                 await this.loadWorkouts(userId);
                 Alpine.store('modal').close();
                 this.resetForm();
+                successAddWorkout()
             }
         } catch (err) { alert("Помилка збереження"); }
         this.isLoading = false;
