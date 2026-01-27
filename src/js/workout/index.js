@@ -11,6 +11,8 @@ Alpine.store('workout', {
     },
     editMode: false,
     isLoading: false,
+    selectedCategory: 'Всі',
+    searchQuery: '',
 
     async loadAllData(userId) {
         this.isLoading = true;
@@ -134,5 +136,44 @@ Alpine.store('workout', {
             }
         } catch (err) { alert("Помилка збереження"); }
         this.isLoading = false;
-    }
+    },
+
+    setCategory(cat) {
+        this.selectedCategory = cat;
+    },
+
+    get filteredWorkouts() {
+        let list = this.workouts || [];
+        const query = (this.searchQuery || '').toLowerCase().trim();
+
+        if (query !== '') {
+            list = list.filter(workout =>
+                workout.name?.toLowerCase().includes(query) ||
+                workout.sets.some(set => set.exercise.name.toLowerCase().includes(query))
+            );
+        }
+
+        if (this.selectedCategory !== 'Всі') {
+            list = list.filter(workout =>
+                workout.sets.some(set => set.exercise.category === this.selectedCategory)
+            );
+        }
+
+        return list;
+    },
+
+    get filteredExercises() {
+        const query = (this.searchQuery || '').toLowerCase().trim();
+        let list = this.exercises || [];
+
+        if (this.selectedCategory !== 'Всі') {
+            list = list.filter(ex => ex.category === this.selectedCategory);
+        }
+
+        if (query !== '') {
+            list = list.filter(ex => ex.name.toLowerCase().includes(query));
+        }
+
+        return list;
+    },
 });
