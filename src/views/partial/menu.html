@@ -12,7 +12,12 @@
     <nav class="menu-nav">
         <ul class="menu-nav__list">
             <li class="menu-nav__list-item">
-                <a href="/plan" class="menu-nav__list-item-link">
+                <a @click="$store.router.push('home')" class="menu-nav__list-item-link">
+                    <span class="menu-nav__icon">🏠</span> Домівка
+                </a>
+            </li>
+            <li class="menu-nav__list-item">
+                <a @click="$store.router.push('plan')" class="menu-nav__list-item-link">
                     <span class="menu-nav__icon">📅</span> План
                 </a>
             </li>
