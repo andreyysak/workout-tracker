@@ -1,13 +1,44 @@
+import {formatDate} from "../date-fns/index.js";
+
 document.addEventListener('alpine:init', () => {
     Alpine.store('user', {
-        avatar: '/src/assets/images/avatar.jpeg',
-        created_at: '10.11.2025',
-        telegram_username: 'andreyysak',
-        telegram_id: 63890176,
-        email: 'andreyysak17@gmail.com',
-        phone: '0678481657',
-        country: 'Ukraine',
-        city: 'Khmelnytskyi',
+        avatar: '',
+        created_at: '',
+        telegram_username: '',
+        telegram_id: '',
+        email: '',
+        phone: '',
+        country: '',
+        city: '',
+
+        get memberSince() {
+            return formatDate(this.created_at);
+        },
+
+        async getInfo() {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/users/me`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                })
+
+                if (!response.ok) throw new Error('Unable to get user info');
+
+                const data = await  response.json()
+
+                this.avatar = data.image
+                this.created_at = data.created_at
+                this.telegram_username = data.telegram_username
+                this.telegram_id = data.telegram_user_id
+                this.email = data.email
+                this.phone = data.phone
+                this.country = data.country
+                this.city = data.city
+            } catch (error) {
+                console.error("Не вдалося отримати дані:", error);
+            }
+        }
     });
 
     window.sidebar = Alpine.store('user');

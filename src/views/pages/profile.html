@@ -1,10 +1,10 @@
-<div class="profile" x-data>
+<div class="profile" x-data x-init="$store.user.getInfo()">
     <header class="profile__header">
         <div class="profile__avatar-wrapper">
             <img :src="$store.user.avatar" alt="User Avatar" class="profile__avatar">
         </div>
         <h1 class="profile__name" x-text="$store.user.telegram_username || 'Спортсмен'"></h1>
-        <p class="profile__status">У системі з <span x-text="$store.user.created_at"></span></p>
+        <p class="profile__status">У системі з <span x-text="$store.user.memberSince"></span></p>
     </header>
 
     <div class="profile__content">
