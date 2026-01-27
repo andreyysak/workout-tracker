@@ -1,0 +1,6 @@
+@use "../../styles/common/variables" as var;
+@use "../../styles/common/mixins" as mix;
+
+.home {
+  @include mix.padding-container;
+}

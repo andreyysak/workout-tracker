@@ -1,0 +1,178 @@
+@use "../../styles/common/variables" as var;
+@use "../../styles/common/mixins" as mix;
+@use "../../styles/common/typography" as typo;
+
+.topbar {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 32px;
+
+  @media (min-width: var.$tablet-breakpoint) {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &__search {
+    &-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    &-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      opacity: 0.4;
+      pointer-events: none;
+      body.dark-mode & { filter: invert(1); }
+    }
+
+    &-input {
+      width: 100%;
+      height: 48px;
+      padding: 0 16px 0 44px;
+      background: var.$surface-light;
+      border: 1px solid var.$border-light;
+      border-radius: var.$border-radius-lg;
+      @include typo.body-text;
+      transition: all 0.2s ease;
+
+      &:focus {
+        outline: none;
+        border-color: var.$accent-light;
+        box-shadow: 0 0 0 4px rgba(var.$accent-light, 0.1);
+        background: var.$surface-light;
+      }
+
+      body.dark-mode & {
+        background: var.$surface-dark;
+        border-color: var.$border-dark;
+        color: var.$text-main-dark;
+        &:focus { border-color: var.$accent-dark; box-shadow: 0 0 0 4px rgba(var.$accent-dark, 0.15); }
+      }
+    }
+  }
+
+  &__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+
+    @media (min-width: var.$tablet-breakpoint) {
+      display: flex;
+      grid-template-columns: none;
+    }
+  }
+
+  &__filters {
+    position: relative;
+  }
+
+  &__filter-btn {
+    @include mix.flex-center;
+    width: 100%;
+    height: 48px;
+    gap: 10px;
+    padding: 0 20px;
+    background: var.$surface-light;
+    border: 1px solid var.$border-light;
+    border-radius: var.$border-radius-lg;
+    @include typo.body-text;
+    font-weight: var.$font-weight-medium;
+    cursor: pointer;
+    transition: var.$transition-base;
+
+    &:hover { background: darken(#fdfdfd, 2%); border-color: darken(var.$border-light, 10%); }
+
+    img {
+      width: 14px;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      &.rotate-180 { transform: rotate(180deg); }
+      body.dark-mode & { filter: invert(1); }
+    }
+
+    body.dark-mode & {
+      background: var.$surface-dark;
+      border-color: var.$border-dark;
+      color: var.$text-main-dark;
+      &:hover { background: lighten(var.$surface-dark, 5%); }
+    }
+  }
+
+  &__dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: var.$surface-light;
+    border: 1px solid var.$border-light;
+    border-radius: var.$border-radius-lg;
+    box-shadow: var.$shadow-dark;
+    z-index: 100;
+    overflow: hidden;
+
+    &-item {
+      width: 100%;
+      text-align: left;
+      padding: 12px 16px;
+      border: none;
+      background: transparent;
+      @include typo.body-text;
+      font-size: var.$font-size-sm;
+      cursor: pointer;
+      transition: background 0.2s;
+
+      &:hover { background: rgba(var.$accent-light, 0.1); color: var.$accent-light; }
+      body.dark-mode & {
+        color: var.$text-main-dark;
+        &:hover { background: rgba(var.$accent-dark, 0.1); color: var.$accent-dark; }
+      }
+    }
+
+    body.dark-mode & { background: var.$surface-dark; border-color: var.$border-dark; }
+  }
+
+  &__add-btn {
+    @include mix.flex-center;
+    width: 100%;
+    height: 48px;
+    gap: 10px;
+    padding: 0 20px;
+    background: var.$accent-light;
+    color: var.$accent-contrast-light;
+    border: none;
+    border-radius: var.$border-radius-lg;
+    @include typo.body-text;
+    font-weight: var.$font-weight-bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    img {
+      width: 22px;
+      height: 22px;
+      filter: brightness(0) invert(1);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    &:hover {
+      background: var.$accent-hover-light;
+      box-shadow: 0 8px 20px -6px rgba(var.$accent-light, 0.4);
+      img { transform: rotate(90deg); }
+    }
+
+    body.dark-mode & {
+      background: var.$accent-dark;
+      color: var.$accent-contrast-dark;
+      img { filter: none; }
+      &:hover {
+        background: var.$accent-hover-dark;
+        box-shadow: 0 8px 20px -6px rgba(var.$accent-dark, 0.3);
+      }
+    }
+  }
+}

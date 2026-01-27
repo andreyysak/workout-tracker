@@ -19,6 +19,14 @@
   }
 }
 
+@mixin padding-container {
+  padding-block: v.$desktop-padding;
+
+  @media (max-width: v.$tablet-breakpoint) {
+    padding-block: v.$mobile-padding;
+  }
+}
+
 @mixin flex-center {
   display: flex;
   align-items: center;
