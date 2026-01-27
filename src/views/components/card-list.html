@@ -1,0 +1,41 @@
+<section class="workout-list" x-data>
+  <div x-show="$store.workout.isLoading" class="workout-list__loader">
+    <p>Завантаження тренувань...</p>
+  </div>
+
+  <template x-if="!$store.workout.isLoading && $store.workout.workouts.length === 0">
+    <div class="workout-list__empty">
+      <p>У вас ще немає записів</p>
+    </div>
+  </template>
+
+  <div class="workout-list__container" x-show="!$store.workout.isLoading && $store.workout.workouts.length > 0">
+    <div class="workout-list__header">
+      <span>Назва</span>
+      <span>Вправа</span>
+      <span>Повт.</span>
+    </div>
+
+    <div class="workout-list__scroll-area">
+      <template x-for="workout in $store.workout.workouts" :key="workout.workout_id">
+        <div class="workout-entry">
+          <template x-for="(set, index) in workout.sets" :key="set.set_id">
+            <div class="workout-entry__row">
+              <div class="workout-entry__col workout-entry__col--name">
+                <span x-show="index === 0" x-text="workout.name || 'Тренування'"></span>
+              </div>
+
+              <div class="workout-entry__col workout-entry__col--exercise">
+                <span x-text="set.exercise.name"></span>
+              </div>
+
+              <div class="workout-entry__col workout-entry__col--reps">
+                <span x-text="set.reps"></span>
+              </div>
+            </div>
+          </template>
+        </div>
+      </template>
+    </div>
+  </div>
+</section>

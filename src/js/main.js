@@ -10,3 +10,10 @@ import './user/index.js'
 import './workout/index.js'
 
 Alpine.start()
+
+document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        Alpine.store('user').getInfo();
+    }
+});

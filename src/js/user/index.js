@@ -38,6 +38,10 @@ document.addEventListener('alpine:init', () => {
                 this.city = data.city
                 this.user_id = data.user_id
 
+                if (this.user_id) {
+                    Alpine.store('workout').loadAllData(this.user_id);
+                }
+
             } catch (error) {
                 console.error("Не вдалося отримати дані:", error);
             }
