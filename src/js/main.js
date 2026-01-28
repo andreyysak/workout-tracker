@@ -8,6 +8,7 @@ import './modal/index.js'
 import './route/index.js'
 import './user/index.js'
 import './workout/index.js'
+import './plan-workout/index.js'
 
 Alpine.start()
 

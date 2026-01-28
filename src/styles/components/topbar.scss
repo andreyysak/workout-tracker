@@ -257,4 +257,32 @@
       img { filter: none; }
     }
   }
+
+  &__plan-btn {
+    background: var.$accent-light;
+    color: var.$accent-contrast-light;
+    border: none;
+    border-radius: var.$border-radius-lg;
+    @include typo.body-text;
+    font-weight: var.$font-weight-bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 12px;
+
+    img {
+      width: 24px;
+      filter: brightness(0) invert(1);
+    }
+
+    &:hover {
+      background: var.$accent-hover-light;
+      box-shadow: 0 4px 12px rgba(var.$accent-light, 0.2);
+    }
+
+    body.dark-mode & {
+      background: var.$accent-dark;
+      color: var.$accent-contrast-dark;
+      img { filter: none; }
+    }
+  }
 }
