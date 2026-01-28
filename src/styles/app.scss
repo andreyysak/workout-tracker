@@ -7,5 +7,6 @@
 
 @use "./components/topbar.scss";
 @use "./components/card-list.scss";
+@use "./components/plan-list.scss";
 @use "./components/add-form.scss";
-@use "./components/plan.scss";
+@use "components/plan-form.scss";
