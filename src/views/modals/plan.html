@@ -1,0 +1,73 @@
+<div class="modal-overlay" x-show="$store.modal.isOpen('planned-modal')" x-cloak>
+    <div class="modal-content" @click.away="$store.modal.close('planned-modal')">
+
+        <header class="modal-form__header">
+            <h2 class="modal-form__title">Запланувати тренування</h2>
+            <button class="modal-form__close" @click="$store.modal.close('planned-modal')">✕</button>
+        </header>
+
+        <form class="modal-form" @submit.prevent="$store.plannedWorkout.save()">
+
+            <div class="modal-form__group">
+                <label class="modal-form__label">Назва плану</label>
+                <input
+                        type="text"
+                        x-model="$store.plannedWorkout.formData.title"
+                        class="modal-form__input"
+                        placeholder="Наприклад: Ранкова зарядка"
+                        required>
+            </div>
+
+            <div class="modal-form__group">
+                <label class="modal-form__label">Дата та час</label>
+                <input
+                        type="datetime-local"
+                        x-model="$store.plannedWorkout.formData.scheduled_at"
+                        class="modal-form__input"
+                        required>
+            </div>
+
+            <div class="modal-form__sets-header">Вправи у плані</div>
+
+            <div class="modal-form__sets">
+                <template x-for="(ex, index) in $store.plannedWorkout.formData.exercises" :key="index">
+                    <div class="modal-form__row">
+                        <select
+                                class="modal-form__input modal-form__input--select"
+                                x-model.number="ex.exercise_id"
+                                required
+                        >
+                            <option value="" disabled selected>Оберіть вправу</option>
+                            <template x-for="realEx in $store.workout.exercises" :key="realEx.exercise_id">
+                                <option :value="realEx.exercise_id" x-text="realEx.name"></option>
+                            </template>
+                        </select>
+
+                        <button
+                                type="button"
+                                class="modal-form__remove"
+                                @click="$store.plannedWorkout.removeExerciseFromForm(index)"
+                        >✕</button>
+                    </div>
+                </template>
+            </div>
+
+            <button
+                    type="button"
+                    class="modal-form__add-set"
+                    @click="$store.plannedWorkout.addExerciseToForm()"
+            >
+                + Додати вправу до списку
+            </button>
+
+            <button
+                    type="submit"
+                    class="modal-form__btn--submit"
+                    :disabled="$store.plannedWorkout.isLoading"
+            >
+                <span x-show="!$store.plannedWorkout.isLoading">Зберегти план</span>
+                <span x-show="$store.plannedWorkout.isLoading">Збереження...</span>
+            </button>
+        </form>
+    </div>
+</div>

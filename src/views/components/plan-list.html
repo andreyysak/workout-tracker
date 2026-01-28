@@ -1,0 +1,35 @@
+<div class="plan-list" x-data x-init="$store.plannedWorkout.loadPlanned()">
+  <div class="plan-list__header">
+    <nav>
+      <ul class="plan-list__grid">
+        <li>Назва</li>
+        <li>Заплановано на</li>
+        <li class="plan-list__action-head"></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="plan-list__content">
+    <template x-if="$store.plannedWorkout.isLoading">
+      <div class="plan-list__status">Завантаження планів...</div>
+    </template>
+
+    <template x-if="!$store.plannedWorkout.isLoading && $store.plannedWorkout.items.length === 0">
+      <div class="plan-list__status">Планів поки немає</div>
+    </template>
+
+    <template x-for="plan in $store.plannedWorkout.items" :key="plan.planned_workout_id">
+      <div class="plan-entry">
+        <div class="plan-entry__grid">
+          <div class="plan-entry__col plan-entry__col--title" x-text="plan.title"></div>
+          <div class="plan-entry__col plan-entry__col--date" x-text="$store.plannedWorkout.formatDate(plan.scheduled_at)"></div>
+          <div class="plan-entry__col plan-entry__col--actions">
+            <button class="plan-entry__delete" @click="if(confirm('Видалити цей план?')) $store.plannedWorkout.deletePlanned(plan.planned_workout_id)">
+              ✕
+            </button>
+          </div>
+        </div>
+      </div>
+    </template>
+  </div>
+</div>

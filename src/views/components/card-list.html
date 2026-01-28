@@ -17,7 +17,7 @@
     </div>
 
     <div class="workout-list__scroll-area">
-      <template x-for="workout in $store.workout.workouts" :key="workout.workout_id">
+      <template x-for="workout in $store.workout.filteredWorkouts" :key="workout.workout_id">
         <div class="workout-entry">
           <template x-for="(set, index) in workout.sets" :key="set.set_id">
             <div class="workout-entry__row">

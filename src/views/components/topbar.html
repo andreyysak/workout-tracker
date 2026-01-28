@@ -2,33 +2,77 @@
   <div class="topbar__search">
     <div class="topbar__search-wrapper">
       <img src="/src/assets/icons/search-svgrepo-com.svg" class="topbar__search-icon" alt="search">
-      <input type="text" class="topbar__search-input" placeholder="Знайти вправу...">
+      <input
+              type="text"
+              class="topbar__search-input"
+              placeholder="Знайти вправу..."
+              x-model="$store.workout.searchQuery"
+      >
     </div>
   </div>
 
   <div class="topbar__actions">
     <div class="topbar__filters" x-data="{ open: false }">
-      <button class="topbar__filter-btn" @click="open = !open" @click.away="open = false">
+      <button class="topbar__filter-btn" @click="open = !open">
         <span>Вправи</span>
         <img src="/src/assets/icons/arrow-down-svgrepo-com.svg" :class="open ? 'rotate-180' : ''" alt="chevron">
       </button>
 
-      <div class="topbar__dropdown" x-show="open" x-transition x-cloak>
+      <div
+              class="topbar__dropdown"
+              x-show="open"
+              x-transition
+              x-cloak
+              @click.away="open = false"
+      >
+        <div class="topbar__dropdown-tabs">
+          <button
+                  type="button"
+                  class="topbar__tab-btn"
+                  :class="$store.workout.selectedCategory === 'Всі' ? 'active' : ''"
+                  @click.stop="$store.workout.setCategory('Всі')"
+          >Всі</button>
+
+          <template x-for="cat in [...new Set($store.workout.exercises.map(e => e.category))]" :key="cat">
+            <button
+                    type="button"
+                    class="topbar__tab-btn"
+                    :class="$store.workout.selectedCategory === cat ? 'active' : ''"
+                    @click.stop="$store.workout.setCategory(cat)"
+                    x-text="cat"
+            ></button>
+          </template>
+        </div>
+
         <ul class="topbar__dropdown-list">
-          <li><button class="topbar__dropdown-item">💪 Силові</button></li>
-          <li><button class="topbar__dropdown-item">🏃 Кардіо</button></li>
-          <li><button class="topbar__dropdown-item">🧘 Розтяжка</button></li>
+          <template x-for="ex in $store.workout.filteredExercises" :key="ex.exercise_id">
+            <li>
+              <button class="topbar__dropdown-item" @click="open = false">
+                <div class="topbar__item-content">
+                  <span class="topbar__item-name" x-text="ex.name"></span>
+                  <span class="topbar__item-cat" x-text="ex.category"></span>
+                </div>
+              </button>
+            </li>
+          </template>
+
+          <template x-if="$store.workout.filteredExercises.length === 0">
+            <li class="topbar__dropdown-empty">Нічого не знайдено</li>
+          </template>
         </ul>
       </div>
     </div>
 
     <div class="topbar__add">
-      <button
-              class="topbar__add-btn"
-              @click="$store.workout.prepareForm()"
-      >
+      <button class="topbar__add-btn" @click="$store.workout.prepareForm()">
         <img src="/src/assets/icons/add-svgrepo-com.svg" alt="plus icon">
         <span>Додати</span>
+      </button>
+    </div>
+
+    <div class="topbar__plan">
+      <button class="topbar__plan-btn" @click="$store.plannedWorkout.prepareForm()">
+        <img src="/src/assets/icons/date-range-svgrepo-com.svg" alt="date icon">
       </button>
     </div>
   </div>
