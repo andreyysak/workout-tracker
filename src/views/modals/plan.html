@@ -1,0 +1,47 @@
+<div class="modal-overlay" x-show="$store.modal.isOpen('planned-modal')" x-cloak>
+    <div class="modal-content" @click.away="$store.modal.close('planned-modal')">
+
+        <header class="modal-form__header">
+            <h2 class="modal-form__title">Запланувати тренування</h2>
+            <button class="modal-form__close">✕</button>
+        </header>
+
+        <form class="modal-form">
+
+            <div class="modal-form__group">
+                <label class="modal-form__label">Назва плану</label>
+                <input type="text" class="modal-form__input" placeholder="Наприклад: Ранкова руханка" required>
+            </div>
+
+            <div class="modal-form__group">
+                <label class="modal-form__label">Дата та час</label>
+                <input type="datetime-local" class="modal-form__input" required>
+            </div>
+
+            <div class="modal-form__sets-header">Вправи у плані</div>
+
+            <div class="modal-form__sets">
+                <template>
+                    <div class="modal-form__row">
+                        <select  class="modal-form__input modal-form__input--select" required>
+                            <option value="" disabled selected>Оберіть вправу</option>
+                            <template>
+                                <option></option>
+                            </template>
+                        </select>
+
+                        <button type="button" class="modal-form__remove">✕</button>
+                    </div>
+                </template>
+            </div>
+
+            <button type="button" class="modal-form__add-set">
+                + Додати вправу до списку
+            </button>
+
+            <button type="submit" class="modal-form__btn--submit">
+                Зберегти план
+            </button>
+        </form>
+    </div>
+</div>
