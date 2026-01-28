@@ -64,3 +64,62 @@ export function initWorkoutChart() {
         });
     }, 100);
 }
+
+export function initExerciseCategoryChart() {
+    setTimeout(() => {
+        const canvas = document.getElementById('exerciseCategoryChart');
+        if (!canvas) {
+            console.error("Canvas element #exerciseCategoryChart not found");
+            return;
+        }
+
+        const ctx = canvas.getContext('2d');
+        const store = Alpine.store('workout');
+
+        const chart = new Chart(ctx, {
+            type: 'doughnut', // Тип графіка
+            data: store.exerciseCategoryChartData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    duration: 1000,
+                    easing: 'easeOutBounce'
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'right', // Легенда праворуч для Doughnut Chart
+                        labels: {
+                            color: document.body.classList.contains('dark-mode') ? '#fff' : '#666',
+                            font: { size: 12, weight: 'bold' }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 12,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                let label = tooltipItem.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += tooltipItem.raw + ' разів';
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        Alpine.effect(() => {
+            const newData = store.exerciseCategoryChartData;
+            if (newData.labels.length > 0) {
+                chart.data = newData;
+                chart.update('none');
+            }
+        });
+    }, 100);
+}

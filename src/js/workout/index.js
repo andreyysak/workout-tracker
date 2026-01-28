@@ -185,14 +185,12 @@ Alpine.store('workout', {
         const stats = {};
 
         this.workouts.forEach((workout) => {
-            // Використовуємо дату створення або поточну, якщо дати немає
             const date = new Date(workout.created_at || new Date()).toLocaleDateString('uk-UA');
 
             if (!stats[date]) {
                 stats[date] = { exercises: 0, sets: 0 };
             }
 
-            // Рахуємо унікальні вправи у тренуванні
             if (workout.sets && workout.sets.length > 0) {
                 const uniqueEx = new Set(workout.sets.map(s => s.exercise_id)).size;
                 stats[date].exercises += uniqueEx;
@@ -200,7 +198,6 @@ Alpine.store('workout', {
             }
         });
 
-        // Сортуємо дати, щоб графік йшов хронологічно
         const labels = Object.keys(stats).sort((a, b) => {
             return new Date(a.split('.').reverse().join('-')) - new Date(b.split('.').reverse().join('-'));
         });
@@ -230,6 +227,37 @@ Alpine.store('workout', {
                     pointRadius: 4
                 }
             ]
+        };
+    },
+
+    get exerciseCategoryChartData() {
+        if (!this.workouts || this.workouts.length === 0) {
+            return { labels: [], datasets: [] };
+        }
+
+        const categoryCounts = {};
+
+        this.workouts.forEach(workout => {
+            workout.sets.forEach(set => {
+                const exercise = this.exercises.find(ex => ex.exercise_id === set.exercise_id);
+
+                const category = exercise?.name;
+
+                categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+            });
+        });
+
+        const labels = Object.keys(categoryCounts);
+        const data = labels.map(label => categoryCounts[label]);
+
+        return {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: ['#7ed321', '#4a90e2', '#f5a623', '#bd10e0', '#9013fe'],
+                borderColor: document.body.classList.contains('dark-mode') ? '#1a1a1a' : '#fff',
+                borderWidth: 2
+            }]
         };
     }
 });
