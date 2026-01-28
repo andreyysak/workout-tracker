@@ -50,7 +50,6 @@ Alpine.store('plannedWorkout', {
         this.formData = {
             title: '',
             scheduled_at: '',
-            notes: '',
             exercises: []
         };
     },
