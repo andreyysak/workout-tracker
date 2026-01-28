@@ -176,4 +176,60 @@ Alpine.store('workout', {
 
         return list;
     },
+
+    get chartData() {
+        if (!this.workouts || this.workouts.length === 0) {
+            return { labels: [], datasets: [] };
+        }
+
+        const stats = {};
+
+        this.workouts.forEach((workout) => {
+            // Використовуємо дату створення або поточну, якщо дати немає
+            const date = new Date(workout.created_at || new Date()).toLocaleDateString('uk-UA');
+
+            if (!stats[date]) {
+                stats[date] = { exercises: 0, sets: 0 };
+            }
+
+            // Рахуємо унікальні вправи у тренуванні
+            if (workout.sets && workout.sets.length > 0) {
+                const uniqueEx = new Set(workout.sets.map(s => s.exercise_id)).size;
+                stats[date].exercises += uniqueEx;
+                stats[date].sets += workout.sets.length;
+            }
+        });
+
+        // Сортуємо дати, щоб графік йшов хронологічно
+        const labels = Object.keys(stats).sort((a, b) => {
+            return new Date(a.split('.').reverse().join('-')) - new Date(b.split('.').reverse().join('-'));
+        });
+
+        const exerciseCounts = labels.map(date => stats[date].exercises);
+        const setsCounts = labels.map(date => stats[date].sets);
+
+        return {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Вправи',
+                    data: exerciseCounts,
+                    borderColor: '#7ed321',
+                    backgroundColor: 'rgba(126, 211, 33, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 4
+                },
+                {
+                    label: 'Підходи',
+                    data: setsCounts,
+                    borderColor: '#4a90e2',
+                    backgroundColor: 'rgba(74, 144, 226, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 4
+                }
+            ]
+        };
+    }
 });

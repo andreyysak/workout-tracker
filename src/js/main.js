@@ -9,6 +9,7 @@ import './route/index.js'
 import './user/index.js'
 import './workout/index.js'
 import './plan-workout/index.js'
+import {initWorkoutChart} from "./chartjs/index.js";
 
 Alpine.start()
 
@@ -17,4 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (token) {
         Alpine.store('user').getInfo();
     }
+});
+
+window.addEventListener('load', () => {
+    initWorkoutChart();
 });
