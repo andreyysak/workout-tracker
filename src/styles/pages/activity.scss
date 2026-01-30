@@ -1,0 +1,146 @@
+@use "../../styles/common/variables" as var;
+@use "../../styles/common/mixins" as mix;
+
+.activity-page {
+  @include mix.padding-container;
+  max-width: 900px;
+  margin: 0 auto;
+  padding-top: 32px;
+  padding-bottom: 60px;
+}
+
+.activity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 40px;
+  gap: 20px;
+
+  @media (max-width: var.$tablet-breakpoint) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: 4px; }
+  p { color: var.$text-muted-light; font-size: 0.9rem; }
+
+  &__actions {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    @media (min-width: var.$tablet-breakpoint) { width: auto; }
+  }
+}
+
+.search-input {
+  padding: 10px 16px;
+  border-radius: var.$border-radius-md;
+  border: 1px solid var.$border-light;
+  background: var.$surface-light;
+  flex-grow: 1;
+  font-size: 0.9rem;
+
+  &:focus { outline: none; border-color: var.$accent-light; }
+
+  body.dark-mode & {
+    background: var.$surface-dark;
+    border-color: var.$border-dark;
+    color: white;
+  }
+}
+
+.activity-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.activity-card {
+  display: flex;
+  gap: 24px;
+
+  @media (max-width: 600px) { gap: 12px; }
+
+  &__side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    min-width: 60px;
+    padding-top: 12px;
+  }
+
+  &__date { font-weight: 800; font-size: 1.1rem; text-transform: uppercase; }
+  &__time { font-size: 0.8rem; color: var.$text-muted-light; }
+
+  &__main {
+    flex-grow: 1;
+    background: var.$surface-light;
+    border: 1px solid var.$border-light;
+    border-radius: var.$border-radius-lg;
+    padding: 24px;
+    transition: transform 0.2s;
+
+    &:hover { border-color: var.$accent-light; }
+
+    body.dark-mode & {
+      background: var.$surface-dark;
+      border-color: var.$border-dark;
+    }
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    h3 { font-size: 1.2rem; font-weight: 700; margin: 0; }
+  }
+}
+
+.meta-badge {
+  font-size: 0.75rem;
+  background: rgba(var.$accent-light, 0.1);
+  color: var.$accent-light;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 700;
+}
+
+.activity-card__exercises {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.exercise-item {
+  background: rgba(0,0,0,0.02);
+  padding: 12px;
+  border-radius: var.$border-radius-md;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  body.dark-mode & { background: rgba(255,255,255,0.03); }
+
+  &__name { font-size: 0.9rem; font-weight: 500; }
+
+  &__stats {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var.$text-muted-light;
+
+    .separator { margin: 0 4px; opacity: 0.5; }
+    span:first-child { color: var.$accent-light; }
+  }
+}
+
+.workout-notes {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px dashed var.$border-light;
+  font-size: 0.85rem;
+  color: var.$text-muted-light;
+  font-style: italic;
+
+  body.dark-mode & { border-color: var.$border-dark; }
+}
