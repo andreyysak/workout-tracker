@@ -1,0 +1,84 @@
+<div class="plan-page" x-data x-init="$store.plannedWorkout.loadPlanned()">
+    <div class="date-strip">
+        <div class="date-strip__header">
+            <h3 x-text="$store.plannedWorkout.currentMonthYear" style="text-transform: capitalize;"></h3>
+            <div class="date-strip__nav">
+                <button class="btn-icon" @click="$store.plannedWorkout.changeWeek(-1)">←</button>
+                <button class="btn-icon" @click="$store.plannedWorkout.changeWeek(1)">→</button>
+            </div>
+        </div>
+        <div class="date-strip__days" x-ref="daysContainer">
+            <template x-for="day in $store.plannedWorkout.weekDays" :key="day.full.getTime()">
+                <div class="date-day"
+                     :class="{
+                        'date-day--active': day.isSelected,
+                        'date-day--today': day.isToday,
+                        'date-day--has-plans': day.hasPlans && !day.isSelected
+                     }"
+                     @click="$store.plannedWorkout.selectDate(day.full)">
+                    <span class="date-day__name" x-text="day.name"></span>
+                    <span class="date-day__number" x-text="day.number"></span>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <div class="plan-grid">
+        <div class="plan-main">
+            <div class="section-header">
+                <h2 x-text="$store.plannedWorkout.selectedDate.toDateString() === new Date().toDateString() ? 'План на сьогодні' : 'План на ' + $store.plannedWorkout.selectedDate.toLocaleDateString('uk-UA')"></h2>
+                <button class="btn-add" @click="$store.plannedWorkout.resetForm(); $store.modal.open('planned-modal')">+ Додати</button>
+            </div>
+
+            <div class="timeline">
+                <template x-for="plan in $store.plannedWorkout.filteredItems" :key="plan.planned_workout_id">
+                    <div class="timeline-item">
+                        <div class="timeline-item__time">
+                            <span x-text="new Date(plan.scheduled_at).toLocaleTimeString('uk-UA', {hour: '2-digit', minute:'2-digit'})"></span>
+                        </div>
+                        <div class="timeline-item__card">
+                            <div class="card-info">
+                                <h4 x-text="plan.title"></h4>
+                                <p x-text="plan.notes || 'Без нотаток'"></p>
+                                <div class="card-tags">
+                                    <span class="tag">Силові</span>
+                                    <span class="tag tag--sets" x-text="plan.exercises ? plan.exercises.length + ' вправ' : '0 вправ'"></span>
+                                </div>
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn-action">Виконати</button>
+                                <button class="btn-delete" @click="$store.plannedWorkout.deletePlanned(plan.planned_workout_id)">✕</button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <template x-if="$store.plannedWorkout.filteredItems.length === 0">
+                    <div class="plan-empty">
+                        <div class="plan-empty__icon">📅</div>
+                        <p>На цей день тренувань не заплановано</p>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <aside class="plan-sidebar">
+            <div class="stats-card">
+                <h3>Активність тижня</h3>
+                <div class="stats-mini">
+                    <div class="stats-mini__item">
+                        <span>Планів</span>
+                        <strong x-text="$store.plannedWorkout.items.length"></strong>
+                    </div>
+                    <div class="stats-mini__item">
+                        <span>На обраний день</span>
+                        <strong x-text="$store.plannedWorkout.filteredItems.length"></strong>
+                    </div>
+                </div>
+                <div class="stats-progress">
+                    <div class="stats-progress__bar" style="width: 45%"></div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>

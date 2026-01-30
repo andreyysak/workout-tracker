@@ -1,0 +1,205 @@
+@use "../../styles/common/variables" as var;
+@use "../../styles/common/mixins" as mix;
+
+.plan-page {
+  @include mix.padding-container;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation: fadeIn 0.4s ease-out;
+
+  @media (min-width: var.$tablet-breakpoint) {
+    gap: 32px;
+  }
+}
+
+.date-strip {
+  background: var.$surface-light;
+  padding: 16px;
+  border-radius: var.$border-radius-lg;
+  border: 1px solid var.$border-light;
+  margin: 0 -16px;
+
+  @media (min-width: var.$tablet-breakpoint) {
+    border-radius: var.$border-radius-lg;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding: 0 8px;
+    h3 { font-size: 1rem; font-weight: 700; text-transform: capitalize; }
+  }
+
+  &__days {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar { display: none; }
+
+    @media (min-width: var.$tablet-breakpoint) {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 12px;
+      overflow: visible;
+    }
+  }
+
+  body.dark-mode & {
+    background: var.$surface-dark;
+    border-color: var.$border-dark;
+  }
+}
+
+.date-day {
+  flex: 0 0 55px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+  border-radius: var.$border-radius-md;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &__name { font-size: 0.7rem; color: var.$text-muted-light; margin-bottom: 4px; }
+  &__number { font-size: 1rem; font-weight: 700; }
+
+  &--active {
+    background: var.$accent-light !important;
+    color: white;
+    .date-day__name { color: rgba(255,255,255,0.8); }
+  }
+
+  @media (min-width: var.$tablet-breakpoint) {
+    flex: 1;
+    padding: 12px;
+    &__number { font-size: 1.1rem; }
+  }
+}
+
+.plan-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  @media (min-width: var.$tablet-breakpoint) {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 32px;
+  }
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  @media (max-width: var.$mobile-breakpoint) {
+    flex-direction: column;
+    margin-bottom: 0;
+  }
+}
+
+.btn-add {
+  padding: 12px 24px;
+  border-radius: var.$border-radius-lg;
+  background: var.$accent-light;
+  color: #fff;
+  font-weight: var.$font-weight-bold;
+
+  &:hover {
+    background: var.$accent-hover-light;
+  }
+
+  @media (max-width: var.$mobile-breakpoint) {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
+.plan-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+  margin-top: 80px;
+}
+
+.timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &::before {
+    left: 40px;
+    @media (min-width: var.$tablet-breakpoint) { left: 60px; }
+  }
+}
+
+.timeline-item {
+  display: flex;
+  gap: 16px;
+
+  &__time {
+    width: 35px;
+    font-size: 0.75rem;
+    @media (min-width: var.$tablet-breakpoint) { width: 45px; font-size: 0.85rem; }
+  }
+
+  &__card {
+    padding: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+
+    &::after {
+      left: -25px;
+      @media (min-width: var.$tablet-breakpoint) { left: -37px; }
+    }
+
+    @media (min-width: var.$tablet-breakpoint) {
+      padding: 20px;
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+}
+
+.card-info {
+  width: 100%;
+  h4 { font-size: 0.95rem; }
+  p { font-size: 0.8rem; }
+}
+
+.card-actions {
+  width: 100%;
+  justify-content: space-between;
+
+  .btn-action {
+    flex-grow: 1;
+    text-align: center;
+  }
+
+  @media (min-width: var.$tablet-breakpoint) {
+    width: auto;
+    justify-content: flex-end;
+    .btn-action { flex-grow: 0; }
+  }
+}
+
+.stats-card {
+  position: static;
+  padding: 0 20px;
+
+  @media (min-width: var.$tablet-breakpoint) {
+    position: sticky;
+    top: 100px;
+  }
+}
