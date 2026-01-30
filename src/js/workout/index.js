@@ -185,25 +185,41 @@ Alpine.store('workout', {
         const stats = {};
 
         this.workouts.forEach((workout) => {
-            const date = new Date(workout.created_at || new Date()).toLocaleDateString('uk-UA');
+            const rawDate = workout.date || workout.created_at;
+            if (!rawDate) return;
 
-            if (!stats[date]) {
-                stats[date] = { exercises: 0, sets: 0 };
+            const dateISO = new Date(rawDate).toISOString().split('T')[0];
+
+            if (!stats[dateISO]) {
+                stats[dateISO] = { exercises: 0, sets: 0 };
             }
 
             if (workout.sets && workout.sets.length > 0) {
                 const uniqueEx = new Set(workout.sets.map(s => s.exercise_id)).size;
-                stats[date].exercises += uniqueEx;
-                stats[date].sets += workout.sets.length;
+                stats[dateISO].exercises += uniqueEx;
+                stats[dateISO].sets += workout.sets.length;
             }
         });
 
-        const labels = Object.keys(stats).sort((a, b) => {
-            return new Date(a.split('.').reverse().join('-')) - new Date(b.split('.').reverse().join('-'));
+        let sortedDates = Object.keys(stats).sort();
+
+        if (sortedDates.length === 0) return { labels: [], datasets: [] };
+
+        const firstDate = new Date(sortedDates[0]);
+        const lastDate = new Date(sortedDates[sortedDates.length - 1]);
+        const fullDateRange = [];
+
+        for (let d = new Date(firstDate); d <= lastDate; d.setDate(d.getDate() + 1)) {
+            fullDateRange.push(d.toISOString().split('T')[0]);
+        }
+
+        const labels = fullDateRange.map(date => {
+            const [y, m, d] = date.split('-');
+            return `${d}.${m}`;
         });
 
-        const exerciseCounts = labels.map(date => stats[date].exercises);
-        const setsCounts = labels.map(date => stats[date].sets);
+        const exerciseCounts = fullDateRange.map(date => stats[date]?.exercises || 0);
+        const setsCounts = fullDateRange.map(date => stats[date]?.sets || 0);
 
         return {
             labels: labels,

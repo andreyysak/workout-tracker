@@ -1,40 +1,71 @@
 import Alpine from 'alpinejs';
 
+const isTokenExpired = (token) => {
+    if (!token) return true;
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const now = Math.floor(Date.now() / 1000);
+        return payload.exp < now;
+    } catch (e) {
+        return true;
+    }
+};
+
 Alpine.store('auth', {
     token: localStorage.getItem('token') || null,
-    isAuthenticated: !!localStorage.getItem('token'),
-    user: null,
+    isAuthenticated: false,
+    publicPages: ['login'],
 
     init() {
+        this.handleUrlToken();
+
+        if (this.token && isTokenExpired(this.token)) {
+            this.logout();
+        } else if (this.token) {
+            this.isAuthenticated = true;
+        }
+
+        Alpine.effect(() => {
+            const currentPage = Alpine.store('router')?.currentPage;
+            if (currentPage) {
+                this.verifyAccess(currentPage);
+            }
+        });
+    },
+
+    handleUrlToken() {
         const urlParams = new URLSearchParams(window.location.search);
         const tokenFromUrl = urlParams.get('token');
-        const isLoginSuccess = window.location.pathname.includes('login-success');
 
-        if (tokenFromUrl && isLoginSuccess) {
+        if (tokenFromUrl) {
             this.setToken(tokenFromUrl);
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    },
+
+    verifyAccess(page) {
+        if (this.token && isTokenExpired(this.token)) {
+            this.logout();
             return;
         }
 
-        this.checkAuthStatus();
-    },
+        const isPublic = this.publicPages.includes(page);
+        const hasToken = !!this.token;
 
-    checkAuthStatus() {
-        const isLoginPage = Alpine.store('router')?.currentPage === 'login';
+        if (!isPublic && !hasToken) {
+            Alpine.store('router').push('login');
+            return;
+        }
 
-        if (!this.token && !isLoginPage) {
-            setTimeout(() => {
-                Alpine.store('router').push('login');
-            }, 0);
+        if (hasToken && page === 'login') {
+            Alpine.store('router').push('home');
         }
     },
 
     async setToken(token) {
         this.token = token;
         localStorage.setItem('token', token);
-
         this.isAuthenticated = true;
-
-        window.history.replaceState({}, document.title, "/");
 
         if (Alpine.store('router')) {
             Alpine.store('router').push('home');
@@ -43,9 +74,7 @@ Alpine.store('auth', {
 
     loginWithGoogle() {
         const baseUrl = import.meta.env.VITE_GOOGLE_AUTH_URL;
-        const currentOrigin = window.location.origin;
-
-        window.location.href = `${baseUrl}?frontendUrl=${currentOrigin}`;
+        window.location.href = `${baseUrl}?frontendUrl=${window.location.origin}`;
     },
 
     logout() {

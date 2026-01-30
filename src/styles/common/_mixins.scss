@@ -22,7 +22,7 @@
 @mixin padding-container {
   padding-block: v.$desktop-padding;
 
-  @media (max-width: v.$tablet-breakpoint) {
+  @media (max-width: v.$mobile-breakpoint) {
     padding-block: v.$mobile-padding;
   }
 }

@@ -1,0 +1,57 @@
+<div class="activity-page" x-data x-init="$store.workout.loadWorkouts($store.user.user_id)">
+  <header class="activity-header">
+    <div class="activity-header__info">
+      <h1>Історія тренувань</h1>
+      <p x-text="`Усього виконано: ${$store.workout.workouts.length} сесій`"></p>
+    </div>
+    <div class="activity-header__actions">
+      <input type="text" x-model="$store.workout.searchQuery" placeholder="Пошук тренування..." class="search-input">
+      <button class="btn-filter">
+        <span>📅</span> Весь час
+      </button>
+    </div>
+  </header>
+
+  <div class="activity-feed">
+    <template x-for="workout in $store.workout.filteredWorkouts" :key="workout.workout_id">
+      <div class="activity-card">
+        <div class="activity-card__side">
+          <span class="activity-card__date" x-text="new Date(workout.date).toLocaleDateString('uk-UA', { day: '2-digit', month: 'short' })"></span>
+          <span class="activity-card__time" x-text="new Date(workout.date).toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' })"></span>
+        </div>
+
+        <div class="activity-card__main">
+          <div class="activity-card__header">
+            <h3 x-text="workout.name || 'Травневе тренування'"></h3>
+            <div class="activity-card__meta">
+              <span x-text="`${workout.sets.length} підходів`" class="meta-badge"></span>
+            </div>
+          </div>
+
+          <div class="activity-card__exercises">
+            <template x-for="set in workout.sets" :key="set.set_id">
+              <div class="exercise-item">
+                <span class="exercise-item__name" x-text="set.exercise?.name"></span>
+                <div class="exercise-item__stats">
+                  <span x-text="`${set.weight} кг`" x-show="set.weight"></span>
+                  <span class="separator" x-show="set.weight && set.reps">×</span>
+                  <span x-text="`${set.reps} повт.`" x-show="set.reps"></span>
+                </div>
+              </div>
+            </template>
+          </div>
+
+          <div class="activity-card__footer" x-show="workout.notes">
+            <p class="workout-notes" x-text="workout.notes"></p>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <template x-if="$store.workout.filteredWorkouts.length === 0">
+      <div class="activity-empty">
+        <p>Тренувань не знайдено</p>
+      </div>
+    </template>
+  </div>
+</div>
